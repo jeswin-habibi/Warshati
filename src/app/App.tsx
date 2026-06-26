@@ -12,6 +12,9 @@ import CustomerForm from '@/features/customers/CustomerForm'
 import CustomerDetailPage from '@/features/customers/CustomerDetailPage'
 import VehicleForm from '@/features/customers/VehicleForm'
 import JobsPage from '@/features/jobs/JobsPage'
+import JobForm from '@/features/jobs/JobForm'
+import JobDetailPage from '@/features/jobs/JobDetailPage'
+import LineItemForm from '@/features/jobs/LineItemForm'
 import InventoryPage from '@/features/inventory/InventoryPage'
 import MorePage from '@/features/more/MorePage'
 
@@ -40,6 +43,10 @@ export default function App() {
           <Route path="customers/:id/edit" element={<CustomerForm />} />
           <Route path="customers/:id/vehicle/new" element={<VehicleForm />} />
           <Route path="jobs" element={<JobsPage />} />
+          <Route path="jobs/new" element={<JobForm />} />
+          <Route path="jobs/:id" element={<JobDetailPage />} />
+          <Route path="jobs/:id/line/new" element={<LineItemForm />} />
+          <Route path="jobs/:id/line/:lineId" element={<LineItemForm />} />
           <Route path="inventory" element={<InventoryPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
