@@ -98,7 +98,7 @@ export default function HomePage() {
     <div className="space-y-4">
       {business && <h1 className="text-2xl font-extrabold">{business.name}</h1>}
 
-      <Card className="bg-primary text-primary-foreground">
+      <Card className="gradient-primary border-0 text-primary-foreground shadow-lift">
         <CardContent className="py-6">
           <p className="text-center text-sm font-semibold opacity-90">{t('home.monthRevenue')}</p>
           <p className="stat-number mt-1 text-center">{formatMoney(monthRev)}</p>

@@ -32,7 +32,7 @@ export default function DailyClosePage() {
     <div className="space-y-4">
       <ScreenHeader title={t('dailyClose.title')} />
 
-      <Card className="bg-primary text-primary-foreground">
+      <Card className="gradient-primary border-0 text-primary-foreground shadow-lift">
         <CardContent className="py-6 text-center">
           <p className="text-sm font-semibold opacity-90">{t('dailyClose.revenue')}</p>
           <p className="stat-number mt-1">{formatMoney(revenue)}</p>
