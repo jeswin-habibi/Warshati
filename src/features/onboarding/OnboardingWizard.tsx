@@ -25,19 +25,20 @@ export default function OnboardingWizard({ onDone }: { onDone: () => void }) {
     setError(null)
     const { data: userRes } = await supabase.auth.getUser()
     const uid = userRes.user?.id
-    const { data: biz, error: e1 } = await supabase
+    // Generate the id client-side so we don't depend on INSERT…RETURNING — RLS would filter the
+    // returned row because the user isn't a member of the business until the next insert.
+    const businessId = crypto.randomUUID()
+    const { error: e1 } = await supabase
       .from('businesses')
-      .insert({ name: name.trim(), currency: 'KWD', language: lang })
-      .select('id')
-      .single()
-    if (e1 || !biz) {
+      .insert({ id: businessId, name: name.trim(), currency: 'KWD', language: lang })
+    if (e1) {
       setBusy(false)
-      setError(e1?.message ?? 'error')
+      setError(e1.message)
       return
     }
     const { error: e2 } = await supabase
       .from('business_users')
-      .insert({ business_id: biz.id, user_id: uid, role: 'owner' })
+      .insert({ business_id: businessId, user_id: uid, role: 'owner' })
     setBusy(false)
     if (e2) {
       setError(e2.message)
