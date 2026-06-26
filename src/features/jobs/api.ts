@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { Invoice, Job, JobLineItem, JobStatus, LineItemType } from './types'
 
-const JOB_SELECT = '*, customer:customers(name, name_en, phone), vehicle:vehicles(plate_number, make, model)'
+// customers(*) (not an explicit name_en) so this still works if the 0002 name_en migration hasn't run.
+const JOB_SELECT = '*, customer:customers(*), vehicle:vehicles(plate_number, make, model)'
 
 export function useJobs(businessId: string | null) {
   return useQuery({
@@ -11,7 +12,7 @@ export function useJobs(businessId: string | null) {
     queryFn: async (): Promise<Job[]> => {
       const { data, error } = await supabase.from('jobs').select(JOB_SELECT).order('created_at', { ascending: false })
       if (error) throw error
-      return (data ?? []) as Job[]
+      return (data ?? []) as unknown as Job[]
     },
   })
 }
@@ -23,7 +24,7 @@ export function useJob(id: string | undefined) {
     queryFn: async (): Promise<Job | null> => {
       const { data, error } = await supabase.from('jobs').select(JOB_SELECT).eq('id', id ?? '').maybeSingle()
       if (error) throw error
-      return (data as Job | null) ?? null
+      return (data as unknown as Job | null) ?? null
     },
   })
 }

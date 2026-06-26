@@ -19,7 +19,7 @@ export function useFollowUps(businessId: string | null) {
     enabled: !!businessId,
     queryFn: async (): Promise<FollowUp[]> => {
       const [c, j] = await Promise.all([
-        supabase.from('customers').select('id, name, name_en, phone'),
+        supabase.from('customers').select('*'),
         supabase.from('jobs').select('customer_id, created_at'),
       ])
       if (c.error) throw c.error
@@ -32,7 +32,7 @@ export function useFollowUps(businessId: string | null) {
       }
       const now = Date.now()
       const gap = VISIT_GAP_DAYS * 86_400_000
-      return ((c.data ?? []) as { id: string; name: string; name_en: string | null; phone: string | null }[])
+      return ((c.data ?? []) as unknown as { id: string; name: string; name_en: string | null; phone: string | null }[])
         .map((x) => ({ ...x, lastVisit: last.get(x.id) ?? 0 }))
         .filter((x) => x.lastVisit && now - x.lastVisit >= gap)
         .map((x) => ({ ...x, days: Math.floor((now - x.lastVisit) / 86_400_000) }))
@@ -57,11 +57,11 @@ export function useUnpaid(businessId: string | null) {
     queryFn: async (): Promise<UnpaidInvoice[]> => {
       const { data, error } = await supabase
         .from('invoices')
-        .select('id, total, balance, issued_at, invoice_number, job:jobs(customer:customers(name, name_en, phone))')
+        .select('id, total, balance, issued_at, invoice_number, job:jobs(customer:customers(*))')
         .gt('balance', 0)
         .order('issued_at', { ascending: true })
       if (error) throw error
-      return (data ?? []) as UnpaidInvoice[]
+      return (data ?? []) as unknown as UnpaidInvoice[]
     },
   })
 }

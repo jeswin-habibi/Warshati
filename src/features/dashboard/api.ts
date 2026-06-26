@@ -16,10 +16,10 @@ export function useInvoices(businessId: string | null) {
     queryFn: async (): Promise<InvoiceRow[]> => {
       const { data, error } = await supabase
         .from('invoices')
-        .select('id, total, balance, issued_at, job:jobs(customer:customers(name, name_en))')
+        .select('id, total, balance, issued_at, job:jobs(customer:customers(*))')
         .order('issued_at', { ascending: false })
       if (error) throw error
-      return (data ?? []) as InvoiceRow[]
+      return (data ?? []) as unknown as InvoiceRow[]
     },
   })
 }

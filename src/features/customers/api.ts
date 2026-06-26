@@ -60,14 +60,23 @@ export function useSaveCustomer(businessId: string | null) {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (input: CustomerInput): Promise<string> => {
-      if (input.id) {
-        const { id, ...patch } = input
-        const { error } = await supabase.from('customers').update(patch).eq('id', id)
-        if (error) throw error
-        return id
+      const isUpdate = !!input.id
+      const id = input.id ?? crypto.randomUUID()
+      const payload: Record<string, unknown> = { ...input }
+      delete payload.id
+      if (!isUpdate) {
+        payload.id = id
+        payload.business_id = businessId
       }
-      const id = crypto.randomUUID()
-      const { error } = await supabase.from('customers').insert({ ...input, id, business_id: businessId })
+      const run = (p: Record<string, unknown>) =>
+        isUpdate ? supabase.from('customers').update(p).eq('id', id) : supabase.from('customers').insert(p)
+      let { error } = await run(payload)
+      // Tolerate the name_en column not existing yet (0002 migration not applied).
+      if (error && error.message.includes('name_en')) {
+        const fallback = { ...payload }
+        delete fallback.name_en
+        ;({ error } = await run(fallback))
+      }
       if (error) throw error
       return id
     },
