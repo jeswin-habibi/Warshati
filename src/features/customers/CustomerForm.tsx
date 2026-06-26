@@ -20,6 +20,7 @@ export default function CustomerForm() {
   const save = useSaveCustomer(business?.id ?? null)
 
   const [name, setName] = useState('')
+  const [nameEn, setNameEn] = useState('')
   const [phone, setPhone] = useState('')
   const [altPhone, setAltPhone] = useState('')
   const [civilId, setCivilId] = useState('')
@@ -30,6 +31,7 @@ export default function CustomerForm() {
     const c = existing.data
     if (!c) return
     setName(c.name ?? '')
+    setNameEn(c.name_en ?? '')
     setPhone(c.phone ?? '')
     setAltPhone(c.alt_phone ?? '')
     setCivilId(c.civil_id ?? '')
@@ -43,6 +45,7 @@ export default function CustomerForm() {
     await save.mutateAsync({
       id,
       name: name.trim(),
+      name_en: nameEn.trim() || null,
       phone: phone.trim() || null,
       alt_phone: altPhone.trim() || null,
       civil_id: civilId.trim() || null,
@@ -61,6 +64,10 @@ export default function CustomerForm() {
         <div>
           <Label>{t('customers.name')} *</Label>
           <Input value={name} onChange={(e) => setName(e.target.value)} autoFocus required />
+        </div>
+        <div>
+          <Label>{t('customers.nameEn')}</Label>
+          <Input value={nameEn} onChange={(e) => setNameEn(e.target.value)} dir="ltr" />
         </div>
         <div>
           <Label>{t('customers.phone')}</Label>

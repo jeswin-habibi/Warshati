@@ -35,6 +35,7 @@ export interface ItemInput {
   current_stock?: number
   min_stock_alert?: number | null
   track_stock: boolean
+  photo_url?: string | null
 }
 
 export function useSaveItem(businessId: string | null) {
@@ -48,6 +49,7 @@ export function useSaveItem(businessId: string | null) {
         sell_price: input.sell_price,
         min_stock_alert: input.min_stock_alert ?? null,
         track_stock: input.track_stock,
+        photo_url: input.photo_url ?? null,
       }
       if (input.id) {
         const { error } = await supabase.from('inventory_items').update(base).eq('id', input.id)

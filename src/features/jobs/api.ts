@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { Invoice, Job, JobLineItem, JobStatus, LineItemType } from './types'
 
-const JOB_SELECT = '*, customer:customers(name, phone), vehicle:vehicles(plate_number, make, model)'
+const JOB_SELECT = '*, customer:customers(name, name_en, phone), vehicle:vehicles(plate_number, make, model)'
 
 export function useJobs(businessId: string | null) {
   return useQuery({

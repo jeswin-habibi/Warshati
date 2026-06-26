@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { VoiceNote } from '@/components/VoiceNote'
+import { locName } from '@/lib/loc'
 
 export default function CustomerDetailPage() {
   const { t } = useTranslation()
@@ -29,7 +30,7 @@ export default function CustomerDetailPage() {
   return (
     <div className="space-y-4">
       <ScreenHeader
-        title={c.name}
+        title={locName(c.name, c.name_en)}
         action={
           <button
             type="button"

@@ -48,6 +48,7 @@ export function useVehicles(customerId: string | undefined) {
 export interface CustomerInput {
   id?: string
   name: string
+  name_en?: string | null
   phone?: string | null
   alt_phone?: string | null
   civil_id?: string | null

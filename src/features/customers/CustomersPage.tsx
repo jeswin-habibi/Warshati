@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Plus, Search, Phone, Car } from 'lucide-react'
 import { useBusiness } from '@/features/businesses/useBusiness'
 import { useCustomers } from './api'
+import { locName } from '@/lib/loc'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -45,7 +46,7 @@ export default function CustomersPage() {
                 className="tap flex w-full items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 text-start active:bg-accent"
               >
                 <div className="min-w-0">
-                  <div className="truncate font-bold">{c.name}</div>
+                  <div className="truncate font-bold">{locName(c.name, c.name_en)}</div>
                   {c.phone && (
                     <div className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground" dir="ltr">
                       <Phone className="h-3.5 w-3.5" />

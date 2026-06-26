@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Spinner } from '@/components/ui/spinner'
+import { PhotoField } from '@/components/PhotoField'
 
 export default function ItemForm() {
   const { t } = useTranslation()
@@ -26,6 +27,7 @@ export default function ItemForm() {
   const [stock, setStock] = useState('0')
   const [minAlert, setMinAlert] = useState('')
   const [track, setTrack] = useState(true)
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const i = existing.data
@@ -37,6 +39,7 @@ export default function ItemForm() {
     setStock(String(i.current_stock ?? 0))
     setMinAlert(i.min_stock_alert != null ? String(i.min_stock_alert) : '')
     setTrack(i.track_stock)
+    setPhotoUrl(i.photo_url ?? null)
   }, [existing.data])
 
   async function submit(e: FormEvent) {
@@ -51,6 +54,7 @@ export default function ItemForm() {
       current_stock: id ? undefined : Number(stock) || 0,
       min_stock_alert: minAlert ? Number(minAlert) : null,
       track_stock: track,
+      photo_url: photoUrl,
     })
     nav('/inventory', { replace: true })
   }
@@ -82,6 +86,10 @@ export default function ItemForm() {
         }
       />
       <div className="space-y-4">
+        <div>
+          <Label>{t('media.photo')}</Label>
+          <PhotoField businessId={business?.id ?? null} value={photoUrl} onChange={setPhotoUrl} />
+        </div>
         <div>
           <Label>{t('inventory.nameAr')} *</Label>
           <Input value={nameAr} onChange={(e) => setNameAr(e.target.value)} autoFocus required />

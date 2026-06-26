@@ -55,7 +55,8 @@
   "customers": {
     "add": "Add customer",
     "empty": "No customers yet",
-    "name": "Name",
+    "name": "Name (Arabic)",
+    "nameEn": "Name (English)",
     "phone": "Phone",
     "altPhone": "Alt phone",
     "civilId": "Civil ID",
@@ -168,6 +169,7 @@
     "voiceNote": "Voice note",
     "recordVoice": "Record",
     "playVoice": "Play",
-    "photos": "Photos"
+    "photos": "Photos",
+    "photo": "Photo"
   }
 }

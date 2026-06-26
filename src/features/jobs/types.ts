@@ -12,7 +12,7 @@ export interface Job {
   mileage_at_visit: number | null
   created_at: string
   completed_at: string | null
-  customer?: { name: string; phone: string | null } | null
+  customer?: { name: string; name_en: string | null; phone: string | null } | null
   vehicle?: { plate_number: string | null; make: string | null; model: string | null } | null
 }
 

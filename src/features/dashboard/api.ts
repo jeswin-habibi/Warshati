@@ -6,7 +6,7 @@ export interface InvoiceRow {
   total: number
   balance: number
   issued_at: string
-  job?: { customer?: { name: string } | null } | null
+  job?: { customer?: { name: string; name_en: string | null } | null } | null
 }
 
 export function useInvoices(businessId: string | null) {
@@ -16,7 +16,7 @@ export function useInvoices(businessId: string | null) {
     queryFn: async (): Promise<InvoiceRow[]> => {
       const { data, error } = await supabase
         .from('invoices')
-        .select('id, total, balance, issued_at, job:jobs(customer:customers(name))')
+        .select('id, total, balance, issued_at, job:jobs(customer:customers(name, name_en))')
         .order('issued_at', { ascending: false })
       if (error) throw error
       return (data ?? []) as InvoiceRow[]

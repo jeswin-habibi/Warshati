@@ -11,6 +11,7 @@ import { useExpenses } from '@/features/expenses/api'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { formatMoney, formatNumber } from '@/lib/format'
+import { locName } from '@/lib/loc'
 
 const DAY = 86_400_000
 const startOfDay = (t: number) => {
@@ -63,7 +64,7 @@ export default function HomePage() {
 
   const byCust = new Map<string, number>()
   for (const i of inv) {
-    const n = i.job?.customer?.name ?? t('jobs.walkIn')
+    const n = locName(i.job?.customer?.name, i.job?.customer?.name_en) || t('jobs.walkIn')
     byCust.set(n, (byCust.get(n) ?? 0) + Number(i.total || 0))
   }
   const topCustomers = [...byCust.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
@@ -151,7 +152,7 @@ export default function HomePage() {
             <ul className="space-y-1.5">
               {lowItems.slice(0, 5).map((i) => (
                 <li key={i.id} className="flex items-center justify-between gap-2">
-                  <span className="truncate">{i.name_ar}</span>
+                  <span className="truncate">{locName(i.name_ar, i.name_en)}</span>
                   <span className="font-bold tabular-nums text-destructive">{formatNumber(i.current_stock)}</span>
                 </li>
               ))}

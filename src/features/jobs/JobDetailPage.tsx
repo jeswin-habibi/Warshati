@@ -13,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { PhotoGrid } from '@/components/PhotoGrid'
 import { formatMoney } from '@/lib/format'
+import { locName } from '@/lib/loc'
 
 const TYPE_KEY: Record<LineItemType, string> = {
   labor: 'jobs.labor',
@@ -67,7 +68,7 @@ export default function JobDetailPage() {
 
   return (
     <div className="space-y-4 pb-4">
-      <ScreenHeader title={job.customer?.name || t('jobs.walkIn')} action={<StatusBadge status={job.status} />} />
+      <ScreenHeader title={locName(job.customer?.name, job.customer?.name_en) || t('jobs.walkIn')} action={<StatusBadge status={job.status} />} />
 
       <Card>
         <CardContent className="space-y-1.5">

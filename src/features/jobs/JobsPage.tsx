@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { StatusBadge } from '@/components/StatusBadge'
 import { formatDate } from '@/lib/format'
+import { locName } from '@/lib/loc'
 
 export default function JobsPage() {
   const { t } = useTranslation()
@@ -32,7 +33,7 @@ export default function JobsPage() {
                   <Wrench className="h-5 w-5" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate font-bold">{j.customer?.name || t('jobs.walkIn')}</div>
+                  <div className="truncate font-bold">{locName(j.customer?.name, j.customer?.name_en) || t('jobs.walkIn')}</div>
                   <div className="truncate text-sm text-muted-foreground">
                     {j.vehicle?.plate_number || [j.vehicle?.make, j.vehicle?.model].filter(Boolean).join(' ') || formatDate(j.created_at)}
                   </div>

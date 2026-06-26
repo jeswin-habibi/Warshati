@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useBusiness } from '@/features/businesses/useBusiness'
 import { useCustomers, useVehicles } from '@/features/customers/api'
 import type { Customer, Vehicle } from '@/features/customers/types'
+import { locName } from '@/lib/loc'
 import { useSaveJob } from './api'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { Picker } from '@/components/Picker'
@@ -44,13 +45,13 @@ export default function JobForm() {
             onChange={(c) => { setCustomer(c); setVehicle(null) }}
             items={customers ?? []}
             getKey={(c) => c.id}
-            getLabel={(c) => c.name}
+            getLabel={(c) => locName(c.name, c.name_en)}
             getSub={(c) => c.phone ?? undefined}
             placeholder={t('jobs.walkIn')}
             searchPlaceholder={t('common.search')}
             allowClear
             clearLabel={t('jobs.walkIn')}
-            filter={(c, q) => c.name.toLowerCase().includes(q) || (c.phone ?? '').includes(q)}
+            filter={(c, q) => (c.name + ' ' + (c.name_en ?? '')).toLowerCase().includes(q) || (c.phone ?? '').includes(q)}
           />
         </div>
 

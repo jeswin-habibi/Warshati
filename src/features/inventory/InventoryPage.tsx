@@ -7,7 +7,9 @@ import { useItems } from './api'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
+import { Thumb } from '@/components/Thumb'
 import { formatMoney, formatNumber } from '@/lib/format'
+import { locName } from '@/lib/loc'
 
 export default function InventoryPage() {
   const { t } = useTranslation()
@@ -42,11 +44,11 @@ export default function InventoryPage() {
                   onClick={() => nav(`/inventory/${i.id}`)}
                   className="tap flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-4 text-start active:bg-accent"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-                    <Package className="h-5 w-5" />
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-accent text-accent-foreground">
+                    {i.photo_url ? <Thumb path={i.photo_url} /> : <Package className="h-5 w-5" />}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate font-bold">{i.name_ar}</div>
+                    <div className="truncate font-bold">{locName(i.name_ar, i.name_en)}</div>
                     <div className="text-sm tabular-nums text-muted-foreground">{formatMoney(i.sell_price)}</div>
                   </div>
                   <div className="shrink-0 text-end">

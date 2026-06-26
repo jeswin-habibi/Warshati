@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { formatMoney } from '@/lib/format'
+import { locName } from '@/lib/loc'
 
 const TYPES: LineItemType[] = ['labor', 'part', 'service', 'resale']
 
@@ -49,7 +50,7 @@ export default function LineItemForm() {
     setInventoryItemId(item?.id ?? null)
     if (item) {
       setType('part')
-      setDescription(item.name_ar || item.name_en || '')
+      setDescription(locName(item.name_ar, item.name_en))
       setPrice(String(item.sell_price ?? ''))
     }
   }
@@ -83,7 +84,7 @@ export default function LineItemForm() {
               onChange={pickItem}
               items={items ?? []}
               getKey={(i) => i.id}
-              getLabel={(i) => i.name_ar || i.name_en || '—'}
+              getLabel={(i) => locName(i.name_ar, i.name_en) || '—'}
               getSub={(i) => `${formatMoney(i.sell_price)}${i.track_stock ? ' · ' + i.current_stock : ''}`}
               placeholder={t('jobs.pickItem')}
               searchPlaceholder={t('common.search')}
