@@ -1,13 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Phone, Pencil, Trash2, Plus, Car } from 'lucide-react'
-import { useCustomer, useVehicles, useDeleteCustomer } from './api'
+import { useCustomer, useVehicles, useDeleteCustomer, useCustomerJobs } from './api'
 import { ScreenHeader } from '@/components/ScreenHeader'
+import { StatusBadge } from '@/components/StatusBadge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
 import { VoiceNote } from '@/components/VoiceNote'
 import { locName } from '@/lib/loc'
+import { formatMoney, formatNumber, formatDate } from '@/lib/format'
 
 export default function CustomerDetailPage() {
   const { t } = useTranslation()
@@ -15,10 +17,16 @@ export default function CustomerDetailPage() {
   const { id } = useParams()
   const { data: c, isLoading } = useCustomer(id)
   const { data: vehicles } = useVehicles(id)
+  const { data: cjobs } = useCustomerJobs(id)
   const del = useDeleteCustomer()
 
   if (isLoading) return <div className="flex justify-center py-16"><Spinner /></div>
   if (!c) return <div className="py-16 text-center text-muted-foreground">—</div>
+
+  const jobs = cjobs ?? []
+  const spent = jobs.reduce((s, j) => s + Number(j.invoices?.[0]?.total ?? 0), 0)
+  const outstanding = jobs.reduce((s, j) => s + Number(j.invoices?.[0]?.balance ?? 0), 0)
+  const lastVisit = jobs[0]?.created_at ?? null
 
   async function remove() {
     if (!c) return
@@ -60,6 +68,27 @@ export default function CustomerDetailPage() {
         </CardContent>
       </Card>
 
+      {/* mini dashboard */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-2xl border border-border bg-card p-3 shadow-card">
+          <div className="text-xs font-semibold text-muted-foreground">{t('customers.spent')}</div>
+          <div className="mt-1 truncate text-xl font-extrabold tabular-nums text-primary">{formatMoney(spent)}</div>
+        </div>
+        <div className="rounded-2xl border border-border bg-card p-3 shadow-card">
+          <div className="text-xs font-semibold text-muted-foreground">{t('customers.jobs')}</div>
+          <div className="mt-1 text-2xl font-extrabold tabular-nums">{formatNumber(jobs.length)}</div>
+        </div>
+        <div className="rounded-2xl border border-border bg-card p-3 shadow-card">
+          <div className="text-xs font-semibold text-muted-foreground">{t('customers.lastVisit')}</div>
+          <div className="mt-1 text-sm font-bold">{lastVisit ? formatDate(lastVisit) : '—'}</div>
+        </div>
+        <div className="rounded-2xl border border-border bg-card p-3 shadow-card">
+          <div className="text-xs font-semibold text-muted-foreground">{t('customers.outstanding')}</div>
+          <div className={`mt-1 truncate text-sm font-bold tabular-nums ${outstanding > 0 ? 'text-amber-600' : ''}`}>{formatMoney(outstanding)}</div>
+        </div>
+      </div>
+
+      {/* vehicles */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-extrabold">{t('customers.vehicles')}</h2>
         <button
@@ -73,7 +102,7 @@ export default function CustomerDetailPage() {
       </div>
 
       {(vehicles ?? []).length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-border py-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-2xl border border-dashed border-border py-6 text-center text-sm text-muted-foreground">
           {t('customers.noVehicles')}
         </p>
       ) : (
@@ -89,6 +118,34 @@ export default function CustomerDetailPage() {
               </div>
             </li>
           ))}
+        </ul>
+      )}
+
+      {/* job history */}
+      <h2 className="text-lg font-extrabold">{t('customers.history')}</h2>
+      {jobs.length === 0 ? (
+        <p className="rounded-2xl border border-dashed border-border py-6 text-center text-sm text-muted-foreground">
+          {t('customers.noHistory')}
+        </p>
+      ) : (
+        <ul className="space-y-2">
+          {jobs.map((j) => {
+            const invoice = j.invoices?.[0]
+            return (
+              <li key={j.id}>
+                <button
+                  onClick={() => nav(`/jobs/${j.id}`)}
+                  className="tap flex w-full items-center justify-between gap-2 rounded-2xl border border-border bg-card p-3 text-start active:bg-accent"
+                >
+                  <div className="min-w-0">
+                    <div className="text-sm text-muted-foreground">{formatDate(j.created_at)}</div>
+                    <div className="mt-1"><StatusBadge status={j.status} /></div>
+                  </div>
+                  {invoice && <span className="shrink-0 font-bold tabular-nums">{formatMoney(invoice.total)}</span>}
+                </button>
+              </li>
+            )
+          })}
         </ul>
       )}
 

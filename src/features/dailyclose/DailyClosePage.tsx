@@ -35,7 +35,7 @@ export default function DailyClosePage() {
       <Card className="gradient-primary border-0 text-primary-foreground shadow-lift">
         <CardContent className="py-6 text-center">
           <p className="text-sm font-semibold opacity-90">{t('dailyClose.revenue')}</p>
-          <p className="stat-number mt-1">{formatMoney(revenue)}</p>
+          <p className="mt-1 text-3xl font-extrabold tabular-nums tracking-tight">{formatMoney(revenue)}</p>
           <p className="mt-1 text-sm opacity-90">{formatNumber(todayInv.length)} {t('dailyClose.invoices')}</p>
         </CardContent>
       </Card>
@@ -43,11 +43,11 @@ export default function DailyClosePage() {
       <div className="grid grid-cols-2 gap-3">
         <Card><CardContent className="py-4 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('dailyClose.expenses')}</p>
-          <p className="stat-number mt-1 text-destructive">{formatMoney(expense)}</p>
+          <p className="mt-1 text-2xl font-extrabold tabular-nums text-destructive">{formatMoney(expense)}</p>
         </CardContent></Card>
         <Card><CardContent className="py-4 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t('dailyClose.net')}</p>
-          <p className={`stat-number mt-1 ${net >= 0 ? 'text-success' : 'text-destructive'}`}>{formatMoney(net)}</p>
+          <p className={`mt-1 text-2xl font-extrabold tabular-nums ${net >= 0 ? 'text-success' : 'text-destructive'}`}>{formatMoney(net)}</p>
         </CardContent></Card>
       </div>
 
@@ -57,7 +57,7 @@ export default function DailyClosePage() {
             <p className="font-bold">{t('dailyClose.pending')}</p>
             <p className="text-sm text-muted-foreground">{formatNumber(pending.length)} {t('dailyClose.invoices')}</p>
           </div>
-          <span className="stat-number text-amber-600">{formatMoney(pendingTotal)}</span>
+          <span className="shrink-0 text-2xl font-extrabold tabular-nums text-amber-600">{formatMoney(pendingTotal)}</span>
         </CardContent>
       </Card>
     </div>

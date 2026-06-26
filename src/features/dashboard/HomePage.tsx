@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Users, Wrench, CalendarCheck, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, Wallet } from 'lucide-react'
@@ -34,6 +34,7 @@ export default function HomePage() {
   const { data: items } = useItems(business?.id ?? null)
   const { data: expenses } = useExpenses(business?.id ?? null)
   const { data: lineItems } = useLineItems(business?.id ?? null)
+  const [openCust, setOpenCust] = useState<string | null>(null)
 
   const inv = invoices ?? []
   const ts = (iso: string) => new Date(iso).getTime()
@@ -62,12 +63,22 @@ export default function HomePage() {
   const statusCounts: Record<string, number> = { estimate: 0, in_progress: 0, completed: 0, cancelled: 0 }
   for (const j of jobs ?? []) statusCounts[j.status] = (statusCounts[j.status] ?? 0) + 1
 
-  const byCust = new Map<string, number>()
+  // Top customers by invoiced total (keyed by id for drill-through).
+  const custMap = new Map<string, { id: string | null; name: string; total: number }>()
   for (const i of inv) {
-    const n = locName(i.job?.customer?.name, i.job?.customer?.name_en) || t('jobs.walkIn')
-    byCust.set(n, (byCust.get(n) ?? 0) + Number(i.total || 0))
+    const c = i.job?.customer
+    const id = c?.id ?? null
+    const key = id ?? '__walkin__'
+    const ex = custMap.get(key)
+    if (ex) ex.total += Number(i.total || 0)
+    else custMap.set(key, { id, name: locName(c?.name, c?.name_en) || t('jobs.walkIn'), total: Number(i.total || 0) })
   }
-  const topCustomers = [...byCust.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
+  const topCustomers = [...custMap.values()].sort((a, b) => b.total - a.total).slice(0, 5)
+  const maxCust = Math.max(1, ...topCustomers.map((c) => c.total))
+  const jobCountMap = new Map<string, number>()
+  for (const j of jobs ?? []) {
+    if (j.customer_id) jobCountMap.set(j.customer_id, (jobCountMap.get(j.customer_id) ?? 0) + 1)
+  }
 
   const byCat = new Map<string, number>()
   for (const l of lineItems ?? []) {
@@ -76,7 +87,8 @@ export default function HomePage() {
       byCat.set(cat, (byCat.get(cat) ?? 0) + Number(l.total || 0))
     }
   }
-  const topParts = [...byCat.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
+  const topCats = [...byCat.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
+  const maxCat = Math.max(1, ...topCats.map(([, v]) => v))
 
   const lowItems = (items ?? []).filter(
     (i) => i.track_stock && i.min_stock_alert != null && Number(i.current_stock) <= Number(i.min_stock_alert),
@@ -164,8 +176,64 @@ export default function HomePage() {
         </CardContent>
       </Card>
 
-      {topCustomers.length > 0 && <ListCard title={t('home.topCustomers')} rows={topCustomers} />}
-      {topParts.length > 0 && <ListCard title={t('home.topCategories')} rows={topParts} />}
+      {topCustomers.length > 0 && (
+        <Card>
+          <CardContent>
+            <p className="mb-3 font-bold">{t('home.topCustomers')}</p>
+            <div className="space-y-3">
+              {topCustomers.map((c) => {
+                const key = c.id ?? '__walkin__'
+                const open = openCust === key
+                const jc = c.id ? jobCountMap.get(c.id) ?? 0 : 0
+                return (
+                  <div key={key}>
+                    <button onClick={() => setOpenCust(open ? null : key)} className="block w-full text-start">
+                      <div className="mb-1 flex items-center justify-between gap-2 text-sm">
+                        <span className="truncate font-medium">{c.name}</span>
+                        <span className="shrink-0 font-bold tabular-nums">{formatMoney(c.total)}</span>
+                      </div>
+                      <div className="h-2.5 overflow-hidden rounded-full bg-muted">
+                        <div className="gradient-primary h-full rounded-full transition-all" style={{ width: `${Math.max((c.total / maxCust) * 100, 4)}%` }} />
+                      </div>
+                    </button>
+                    {open && (
+                      <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary px-3 py-2 text-sm">
+                        <span className="font-semibold">{t('home.jobsCount', { n: jc })}</span>
+                        {c.id && (
+                          <button onClick={() => nav(`/customers/${c.id}`)} className="font-bold text-primary">
+                            {t('home.viewCustomer')} →
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {topCats.length > 0 && (
+        <Card>
+          <CardContent>
+            <p className="mb-3 font-bold">{t('home.topCategories')}</p>
+            <div className="space-y-3">
+              {topCats.map(([name, total]) => (
+                <div key={name}>
+                  <div className="mb-1 flex items-center justify-between gap-2 text-sm">
+                    <span className="truncate font-medium">{name}</span>
+                    <span className="shrink-0 font-bold tabular-nums">{formatMoney(total)}</span>
+                  </div>
+                  <div className="h-2.5 overflow-hidden rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary/60" style={{ width: `${Math.max((total / maxCat) * 100, 4)}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {lowItems.length > 0 && (
         <Card>
@@ -214,23 +282,5 @@ function Kpi({ label, value, onClick, icon, tone }: { label: string; value: stri
       <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">{icon}{label}</div>
       <div className={`stat-number mt-1 text-2xl ${tone ?? ''}`}>{value}</div>
     </button>
-  )
-}
-
-function ListCard({ title, rows }: { title: string; rows: [string, number][] }) {
-  return (
-    <Card>
-      <CardContent>
-        <p className="mb-2 font-bold">{title}</p>
-        <ul className="space-y-1.5">
-          {rows.map(([name, total]) => (
-            <li key={name} className="flex items-center justify-between gap-2">
-              <span className="truncate">{name}</span>
-              <span className="shrink-0 font-bold tabular-nums">{formatMoney(total)}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-    </Card>
   )
 }

@@ -122,3 +122,27 @@ export function useSaveVehicle(businessId: string | null) {
     },
   })
 }
+
+export interface CustomerJob {
+  id: string
+  status: string
+  created_at: string
+  completed_at: string | null
+  invoices?: { total: number; balance: number }[] | null
+}
+
+export function useCustomerJobs(customerId: string | undefined) {
+  return useQuery({
+    queryKey: ['customer-jobs', customerId],
+    enabled: !!customerId,
+    queryFn: async (): Promise<CustomerJob[]> => {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('id, status, created_at, completed_at, invoices(total, balance)')
+        .eq('customer_id', customerId ?? '')
+        .order('created_at', { ascending: false })
+      if (error) throw error
+      return (data ?? []) as unknown as CustomerJob[]
+    },
+  })
+}

@@ -6,7 +6,7 @@ export interface InvoiceRow {
   total: number
   balance: number
   issued_at: string
-  job?: { customer?: { name: string; name_en: string | null } | null } | null
+  job?: { customer?: { id: string; name: string; name_en: string | null } | null } | null
 }
 
 export function useInvoices(businessId: string | null) {

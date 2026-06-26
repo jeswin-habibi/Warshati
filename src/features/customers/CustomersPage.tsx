@@ -21,7 +21,9 @@ export default function CustomersPage() {
     if (!s) return true
     return (
       c.name?.toLowerCase().includes(s) ||
-      c.phone?.includes(s) ||
+      (c.name_en ?? '').toLowerCase().includes(s) ||
+      (c.phone ?? '').includes(s) ||
+      (c.alt_phone ?? '').includes(s) ||
       (c.vehicles ?? []).some((v) => v.plate_number?.toLowerCase().includes(s))
     )
   })
