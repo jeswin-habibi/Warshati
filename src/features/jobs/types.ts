@@ -25,6 +25,7 @@ export interface JobLineItem {
   quantity: number
   unit_price: number
   total: number
+  inventory_item_id: string | null
 }
 
 export interface Invoice {

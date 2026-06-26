@@ -28,9 +28,7 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-[100svh] max-w-md flex-col justify-center px-6">
       <div className="mb-8 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-primary text-2xl font-black text-primary-foreground">
-          و
-        </div>
+        <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="mx-auto mb-4 h-16 w-16 rounded-3xl" />
         <h1 className="text-3xl font-extrabold">{t('app.name')}</h1>
         <p className="mt-1 text-muted-foreground">{t('app.tagline')}</p>
       </div>

@@ -2,13 +2,17 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useBusiness } from '@/features/businesses/useBusiness'
+import { useItems } from '@/features/inventory/api'
+import type { InventoryItem } from '@/features/inventory/types'
 import { useJobLineItems, useSaveLineItem } from './api'
 import type { LineItemType } from './types'
 import { ScreenHeader } from '@/components/ScreenHeader'
+import { Picker } from '@/components/Picker'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
+import { formatMoney } from '@/lib/format'
 
 const TYPES: LineItemType[] = ['labor', 'part', 'service', 'resale']
 
@@ -18,12 +22,14 @@ export default function LineItemForm() {
   const { id: jobId, lineId } = useParams()
   const { data: business } = useBusiness()
   const { data: lines } = useJobLineItems(jobId)
+  const { data: items } = useItems(business?.id ?? null)
   const save = useSaveLineItem(business?.id ?? null)
 
   const [type, setType] = useState<LineItemType>('labor')
   const [description, setDescription] = useState('')
   const [quantity, setQuantity] = useState('1')
   const [price, setPrice] = useState('')
+  const [inventoryItemId, setInventoryItemId] = useState<string | null>(null)
 
   useEffect(() => {
     if (!lineId || !lines) return
@@ -33,8 +39,20 @@ export default function LineItemForm() {
       setDescription(l.description)
       setQuantity(String(l.quantity))
       setPrice(String(l.unit_price))
+      setInventoryItemId(l.inventory_item_id ?? null)
     }
   }, [lineId, lines])
+
+  const selectedItem = (items ?? []).find((i) => i.id === inventoryItemId) ?? null
+
+  function pickItem(item: InventoryItem | null) {
+    setInventoryItemId(item?.id ?? null)
+    if (item) {
+      setType('part')
+      setDescription(item.name_ar || item.name_en || '')
+      setPrice(String(item.sell_price ?? ''))
+    }
+  }
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -46,6 +64,7 @@ export default function LineItemForm() {
       description: description.trim(),
       quantity: Number(quantity) || 1,
       unit_price: Number(price) || 0,
+      inventory_item_id: inventoryItemId,
     })
     nav(`/jobs/${jobId}`, { replace: true })
   }
@@ -56,6 +75,24 @@ export default function LineItemForm() {
     <form onSubmit={submit} className="flex min-h-[70svh] flex-col">
       <ScreenHeader title={lineId ? t('jobs.editItem') : t('jobs.addItem')} />
       <div className="space-y-4">
+        {(items ?? []).length > 0 && (
+          <div>
+            <Label>{t('jobs.fromInventory')}</Label>
+            <Picker<InventoryItem>
+              value={selectedItem}
+              onChange={pickItem}
+              items={items ?? []}
+              getKey={(i) => i.id}
+              getLabel={(i) => i.name_ar || i.name_en || '—'}
+              getSub={(i) => `${formatMoney(i.sell_price)}${i.track_stock ? ' · ' + i.current_stock : ''}`}
+              placeholder={t('jobs.pickItem')}
+              searchPlaceholder={t('common.search')}
+              allowClear
+              clearLabel={t('jobs.freeText')}
+              filter={(i, q) => (i.name_ar + ' ' + (i.name_en ?? '')).toLowerCase().includes(q)}
+            />
+          </div>
+        )}
         <div>
           <Label>{t('jobs.itemType')}</Label>
           <Select value={type} onChange={(e) => setType(e.target.value as LineItemType)}>

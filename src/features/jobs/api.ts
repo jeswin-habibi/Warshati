@@ -102,6 +102,7 @@ export interface LineInput {
   description: string
   quantity: number
   unit_price: number
+  inventory_item_id?: string | null
 }
 
 export function useSaveLineItem(businessId: string | null) {
@@ -115,6 +116,7 @@ export function useSaveLineItem(businessId: string | null) {
         quantity: input.quantity,
         unit_price: input.unit_price,
         total,
+        inventory_item_id: input.inventory_item_id ?? null,
       }
       if (input.id) {
         const { error } = await supabase.from('job_line_items').update(fields).eq('id', input.id)
@@ -165,11 +167,33 @@ export function useCompleteJob(businessId: string | null) {
         .update({ status: 'completed', completed_at: new Date().toISOString() })
         .eq('id', jobId)
       if (e2) throw e2
+
+      // Deduct stock for line items linked to a tracked inventory item.
+      const { data: lines } = await supabase
+        .from('job_line_items')
+        .select('inventory_item_id, quantity')
+        .eq('job_id', jobId)
+        .not('inventory_item_id', 'is', null)
+      for (const l of (lines ?? []) as { inventory_item_id: string; quantity: number }[]) {
+        const { data: row } = await supabase
+          .from('inventory_items')
+          .select('id, current_stock, track_stock')
+          .eq('id', l.inventory_item_id)
+          .maybeSingle()
+        const it = row as { id: string; current_stock: number; track_stock: boolean } | null
+        if (it && it.track_stock) {
+          await supabase.from('inventory_movements').insert({
+            id: crypto.randomUUID(), business_id: businessId, item_id: it.id, type: 'out', quantity: l.quantity, reason: 'job',
+          })
+          await supabase.from('inventory_items').update({ current_stock: Number(it.current_stock) - Number(l.quantity) }).eq('id', it.id)
+        }
+      }
     },
     onSuccess: (_v, vars) => {
       void qc.invalidateQueries({ queryKey: ['jobs'] })
       void qc.invalidateQueries({ queryKey: ['job', vars.jobId] })
       void qc.invalidateQueries({ queryKey: ['invoice', vars.jobId] })
+      void qc.invalidateQueries({ queryKey: ['items'] })
     },
   })
 }

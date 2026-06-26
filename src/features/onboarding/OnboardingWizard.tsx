@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 export default function OnboardingWizard({ onDone }: { onDone: () => void }) {
   const { t } = useTranslation()
   const [name, setName] = useState('')
-  const [lang, setLang] = useState<Lang>((i18n.language as Lang) in LANGS ? (i18n.language as Lang) : 'ar')
+  const [lang, setLang] = useState<Lang>((i18n.language as Lang) in LANGS ? (i18n.language as Lang) : 'en')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -87,7 +87,7 @@ export default function OnboardingWizard({ onDone }: { onDone: () => void }) {
 
           <div>
             <Label>{t('onboarding.currency')}</Label>
-            <Input value="KWD · د.ك" readOnly dir="ltr" className="opacity-70" />
+            <Input value="KWD" readOnly dir="ltr" className="opacity-70" />
           </div>
 
           {error && <p className="text-sm font-semibold text-destructive">{error}</p>}
