@@ -210,5 +210,21 @@
     "sinceDays": "{{n}} days ago",
     "oilMsg": "Hi {{name}}, it's been {{days}} days since your last oil change at {{shop}} — time for a fresh one? 🚗",
     "maintMsg": "Hi {{name}}, your car is due for periodic maintenance at {{shop}}. Book a slot 🔧"
+  },
+  "invoice": {
+    "invoice": "INVOICE",
+    "estimate": "ESTIMATE",
+    "billTo": "Bill to",
+    "vehicle": "Vehicle",
+    "mileage": "Mileage",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "paid": "Paid",
+    "balanceDue": "Balance due",
+    "thanks": "Thank you for your business 🙏",
+    "print": "Print / Save PDF",
+    "share": "Share PDF",
+    "invoicePdf": "Invoice / PDF",
+    "estimatePdf": "Estimate / PDF"
   }
 }

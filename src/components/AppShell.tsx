@@ -22,7 +22,7 @@ export function AppShell() {
   const count = (reminders?.oil.length ?? 0) + (reminders?.maintenance.length ?? 0)
 
   return (
-    <div className="mx-auto flex min-h-[100svh] max-w-md flex-col">
+    <div className="app-shell-root mx-auto flex min-h-[100svh] max-w-md flex-col">
       <header className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-border/60 bg-background/80 px-4 py-2.5 backdrop-blur-lg">
         <div className="flex items-center gap-2">
           <span className="gradient-primary flex h-9 w-9 items-center justify-center rounded-xl shadow-md shadow-primary/30">

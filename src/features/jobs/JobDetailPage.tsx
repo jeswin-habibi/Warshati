@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Plus, Trash2, CheckCircle2, Share2 } from 'lucide-react'
+import { Plus, Trash2, CheckCircle2, Share2, FileText } from 'lucide-react'
 import { useBusiness } from '@/features/businesses/useBusiness'
 import {
   useJob, useJobLineItems, useInvoiceForJob, useDeleteJob, useDeleteLineItem, useCompleteJob,
@@ -136,6 +136,11 @@ export default function JobDetailPage() {
           <span className="stat-number text-primary">{formatMoney(invoice?.total ?? subtotal)}</span>
         </CardContent>
       </Card>
+
+      <Button variant="secondary" size="lg" className="w-full" onClick={() => nav(`/jobs/${job.id}/invoice`)}>
+        <FileText className="h-5 w-5" />
+        {done ? t('invoice.invoicePdf') : t('invoice.estimatePdf')}
+      </Button>
 
       {done ? (
         <>

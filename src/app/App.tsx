@@ -14,6 +14,7 @@ import VehicleForm from '@/features/customers/VehicleForm'
 import JobsPage from '@/features/jobs/JobsPage'
 import JobForm from '@/features/jobs/JobForm'
 import JobDetailPage from '@/features/jobs/JobDetailPage'
+import InvoicePage from '@/features/jobs/InvoicePage'
 import LineItemForm from '@/features/jobs/LineItemForm'
 import InventoryPage from '@/features/inventory/InventoryPage'
 import ItemForm from '@/features/inventory/ItemForm'
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="jobs" element={<JobsPage />} />
           <Route path="jobs/new" element={<JobForm />} />
           <Route path="jobs/:id" element={<JobDetailPage />} />
+          <Route path="jobs/:id/invoice" element={<InvoicePage />} />
           <Route path="jobs/:id/line/new" element={<LineItemForm />} />
           <Route path="jobs/:id/line/:lineId" element={<LineItemForm />} />
           <Route path="inventory" element={<InventoryPage />} />

@@ -79,3 +79,35 @@
     @apply min-h-[44px] min-w-[44px];
   }
 }
+
+/* Printing an invoice/estimate: strip the app chrome and break out of the
+   mobile max-width so the sheet fills the page. */
+@media print {
+  @page {
+    margin: 12mm;
+  }
+  body {
+    background: #fff !important;
+    background-image: none !important;
+  }
+  header,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .app-shell-root {
+    max-width: none !important;
+    min-height: 0 !important;
+  }
+  .invoice-scroll {
+    overflow: visible !important;
+  }
+  .invoice-sheet {
+    width: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
