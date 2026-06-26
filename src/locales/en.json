@@ -51,5 +51,30 @@
     "creating": "Creating…",
     "step": "Step {{n}} of {{total}}"
   },
-  "home": { "title": "Home", "todayRevenue": "Today's revenue", "comingSoon": "Coming soon" }
+  "home": { "title": "Home", "todayRevenue": "Today's revenue", "comingSoon": "Coming soon" },
+  "customers": {
+    "add": "Add customer",
+    "empty": "No customers yet",
+    "name": "Name",
+    "phone": "Phone",
+    "altPhone": "Alt phone",
+    "civilId": "Civil ID",
+    "notes": "Notes",
+    "newTitle": "New customer",
+    "editTitle": "Edit customer",
+    "save": "Save customer",
+    "vehicles": "Vehicles",
+    "noVehicles": "No vehicles",
+    "deleteConfirm": "Delete this customer and all their records?"
+  },
+  "vehicles": {
+    "add": "Add vehicle",
+    "plate": "Plate number",
+    "make": "Make",
+    "model": "Model",
+    "year": "Year",
+    "color": "Color",
+    "newTitle": "New vehicle",
+    "save": "Save vehicle"
+  }
 }

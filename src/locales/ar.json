@@ -51,5 +51,30 @@
     "creating": "جارٍ الإنشاء…",
     "step": "خطوة {{n}} من {{total}}"
   },
-  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا" }
+  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا" },
+  "customers": {
+    "add": "إضافة عميل",
+    "empty": "لا يوجد عملاء بعد",
+    "name": "الاسم",
+    "phone": "رقم الهاتف",
+    "altPhone": "هاتف آخر",
+    "civilId": "الرقم المدني",
+    "notes": "ملاحظات",
+    "newTitle": "عميل جديد",
+    "editTitle": "تعديل العميل",
+    "save": "حفظ العميل",
+    "vehicles": "المركبات",
+    "noVehicles": "لا توجد مركبات",
+    "deleteConfirm": "حذف هذا العميل وكل سجلاته؟"
+  },
+  "vehicles": {
+    "add": "إضافة مركبة",
+    "plate": "رقم اللوحة",
+    "make": "الصنع",
+    "model": "الموديل",
+    "year": "السنة",
+    "color": "اللون",
+    "newTitle": "مركبة جديدة",
+    "save": "حفظ المركبة"
+  }
 }
