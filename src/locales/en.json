@@ -198,5 +198,17 @@
     "grossProfit": "Gross profit",
     "margin": "Margin",
     "topProfit": "Most profitable items"
+  },
+  "reminders": {
+    "title": "Reminders",
+    "oil": "Oil change",
+    "oilHint": "Customers due for an oil change",
+    "maintenance": "Maintenance",
+    "maintHint": "Customers due for periodic maintenance",
+    "none": "No reminders right now",
+    "remind": "Remind",
+    "sinceDays": "{{n}} days ago",
+    "oilMsg": "Hi {{name}}, it's been {{days}} days since your last oil change at {{shop}} — time for a fresh one? 🚗",
+    "maintMsg": "Hi {{name}}, your car is due for periodic maintenance at {{shop}}. Book a slot 🔧"
   }
 }

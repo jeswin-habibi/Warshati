@@ -84,6 +84,64 @@ export function useMarkPaid(businessId: string | null) {
   })
 }
 
+export interface Reminder {
+  id: string
+  name: string
+  name_en: string | null
+  phone: string | null
+  days: number
+}
+
+const OIL_GAP_DAYS = 90
+const MAINT_GAP_DAYS = 120
+
+/** Customers due for an oil change (last oil service > 90d) or maintenance (last visit > 120d). */
+export function useReminders(businessId: string | null) {
+  return useQuery({
+    queryKey: ['reminders', businessId],
+    enabled: !!businessId,
+    queryFn: async (): Promise<{ oil: Reminder[]; maintenance: Reminder[] }> => {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('created_at, customer:customers(*), lines:job_line_items(description)')
+        .order('created_at', { ascending: false })
+      if (error) throw error
+      type Row = {
+        created_at: string
+        customer: { id: string; name: string; name_en: string | null; phone: string | null } | null
+        lines: { description: string | null }[] | null
+      }
+      const rows = (data ?? []) as unknown as Row[]
+      const info = new Map<string, { id: string; name: string; name_en: string | null; phone: string | null }>()
+      const lastOil = new Map<string, number>()
+      const lastVisit = new Map<string, number>()
+      for (const j of rows) {
+        const c = j.customer
+        if (!c?.id) continue
+        info.set(c.id, c)
+        const tt = new Date(j.created_at).getTime()
+        if (tt > (lastVisit.get(c.id) ?? 0)) lastVisit.set(c.id, tt)
+        const isOil = (j.lines ?? []).some((li) => /oil|زيت/i.test(li.description ?? ''))
+        if (isOil && tt > (lastOil.get(c.id) ?? 0)) lastOil.set(c.id, tt)
+      }
+      const now = Date.now()
+      const mk = (id: string, ts: number): Reminder => {
+        const c = info.get(id)!
+        return { id, name: c.name, name_en: c.name_en, phone: c.phone, days: Math.floor((now - ts) / 86_400_000) }
+      }
+      const oil = [...lastOil.entries()]
+        .filter(([, ts]) => now - ts >= OIL_GAP_DAYS * 86_400_000)
+        .map(([id, ts]) => mk(id, ts))
+        .sort((a, b) => b.days - a.days)
+      const maintenance = [...lastVisit.entries()]
+        .filter(([, ts]) => now - ts >= MAINT_GAP_DAYS * 86_400_000)
+        .map(([id, ts]) => mk(id, ts))
+        .sort((a, b) => b.days - a.days)
+      return { oil, maintenance }
+    },
+  })
+}
+
 export interface ProfitLine {
   type: string
   description: string

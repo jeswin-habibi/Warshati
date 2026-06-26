@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Receipt, CalendarCheck, ChevronLeft, LogOut, MessageCircle, Wallet, TrendingUp } from 'lucide-react'
+import { Receipt, CalendarCheck, ChevronLeft, LogOut, MessageCircle, Wallet, TrendingUp, Bell } from 'lucide-react'
 import i18n, { LANGS, type Lang } from '@/lib/i18n'
 import { supabase } from '@/lib/supabase'
 import { useBusiness } from '@/features/businesses/useBusiness'
@@ -13,6 +13,7 @@ export default function MorePage() {
   const { data: business } = useBusiness()
 
   const menu = [
+    { to: '/reminders', icon: Bell, label: t('reminders.title') },
     { to: '/follow-ups', icon: MessageCircle, label: t('insights.followUps') },
     { to: '/money-owed', icon: Wallet, label: t('insights.moneyOwed') },
     { to: '/profit', icon: TrendingUp, label: t('insights.profit') },

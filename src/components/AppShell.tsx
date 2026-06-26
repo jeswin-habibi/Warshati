@@ -1,8 +1,10 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Home, Users, Wrench, Package, Menu } from 'lucide-react'
+import { Home, Users, Wrench, Package, Menu, Bell } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { SyncStatus } from '@/components/SyncStatus'
+import { useBusiness } from '@/features/businesses/useBusiness'
+import { useReminders } from '@/features/insights/api'
 
 const tabs = [
   { to: '/', icon: Home, key: 'home', end: true },
@@ -14,6 +16,11 @@ const tabs = [
 
 export function AppShell() {
   const { t } = useTranslation()
+  const nav = useNavigate()
+  const { data: business } = useBusiness()
+  const { data: reminders } = useReminders(business?.id ?? null)
+  const count = (reminders?.oil.length ?? 0) + (reminders?.maintenance.length ?? 0)
+
   return (
     <div className="mx-auto flex min-h-[100svh] max-w-md flex-col">
       <header className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-border/60 bg-background/80 px-4 py-2.5 backdrop-blur-lg">
@@ -23,7 +30,22 @@ export function AppShell() {
           </span>
           <span className="text-lg font-extrabold tracking-tight">{t('app.name')}</span>
         </div>
-        <SyncStatus />
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => nav('/reminders')}
+            aria-label={t('reminders.title')}
+            className="tap relative flex items-center justify-center rounded-xl p-1.5 text-muted-foreground active:bg-accent"
+          >
+            <Bell className="h-5 w-5" />
+            {count > 0 && (
+              <span className="absolute end-0.5 top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold leading-none text-white">
+                {count}
+              </span>
+            )}
+          </button>
+          <SyncStatus />
+        </div>
       </header>
 
       <main className="flex-1 px-4 pb-28 pt-4">

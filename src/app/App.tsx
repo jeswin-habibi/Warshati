@@ -25,6 +25,7 @@ import DailyClosePage from '@/features/dailyclose/DailyClosePage'
 import FollowUpsPage from '@/features/insights/FollowUpsPage'
 import MoneyOwedPage from '@/features/insights/MoneyOwedPage'
 import ProfitPage from '@/features/insights/ProfitPage'
+import RemindersPage from '@/features/insights/RemindersPage'
 
 function FullScreen({ children }: { children: ReactNode }) {
   return <div className="flex min-h-[100svh] items-center justify-center">{children}</div>
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="follow-ups" element={<FollowUpsPage />} />
           <Route path="money-owed" element={<MoneyOwedPage />} />
           <Route path="profit" element={<ProfitPage />} />
+          <Route path="reminders" element={<RemindersPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
