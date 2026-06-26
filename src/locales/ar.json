@@ -51,7 +51,7 @@
     "creating": "جارٍ الإنشاء…",
     "step": "خطوة {{n}} من {{total}}"
   },
-  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا" },
+  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا", "monthRevenue": "إيراد الشهر", "weekRevenue": "هذا الأسبوع", "jobsMonth": "أعمال الشهر", "lowStock": "مخزون منخفض", "topCustomers": "أفضل العملاء" },
   "customers": {
     "add": "إضافة عميل",
     "empty": "لا يوجد عملاء بعد",
@@ -132,5 +132,33 @@
     "reason_damaged": "تالف",
     "reason_returned": "مرتجع",
     "deleteConfirm": "حذف هذا الصنف؟"
+  },
+  "expenses": {
+    "title": "المصروفات",
+    "add": "إضافة مصروف",
+    "empty": "لا توجد مصروفات بعد",
+    "monthTotal": "إجمالي الشهر",
+    "newTitle": "مصروف جديد",
+    "editTitle": "تعديل المصروف",
+    "category": "الفئة",
+    "amount": "المبلغ",
+    "date": "التاريخ",
+    "note": "ملاحظة",
+    "recurring": "متكرر شهريًا",
+    "deleteConfirm": "حذف هذا المصروف؟",
+    "cat_rent": "إيجار",
+    "cat_salary": "رواتب",
+    "cat_utilities": "خدمات",
+    "cat_supplies": "مستلزمات",
+    "cat_misc": "متنوع",
+    "cat_other": "أخرى"
+  },
+  "dailyClose": {
+    "title": "إغلاق اليوم",
+    "revenue": "إيراد اليوم",
+    "invoices": "فاتورة",
+    "expenses": "مصروفات اليوم",
+    "net": "الصافي",
+    "pending": "فواتير معلقة"
   }
 }

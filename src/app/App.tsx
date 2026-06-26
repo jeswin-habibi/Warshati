@@ -19,6 +19,9 @@ import InventoryPage from '@/features/inventory/InventoryPage'
 import ItemForm from '@/features/inventory/ItemForm'
 import AdjustStock from '@/features/inventory/AdjustStock'
 import MorePage from '@/features/more/MorePage'
+import ExpensesPage from '@/features/expenses/ExpensesPage'
+import ExpenseForm from '@/features/expenses/ExpenseForm'
+import DailyClosePage from '@/features/dailyclose/DailyClosePage'
 
 function FullScreen({ children }: { children: ReactNode }) {
   return <div className="flex min-h-[100svh] items-center justify-center">{children}</div>
@@ -54,6 +57,10 @@ export default function App() {
           <Route path="inventory/:id" element={<ItemForm />} />
           <Route path="inventory/:id/adjust" element={<AdjustStock />} />
           <Route path="more" element={<MorePage />} />
+          <Route path="expenses" element={<ExpensesPage />} />
+          <Route path="expenses/new" element={<ExpenseForm />} />
+          <Route path="expenses/:id" element={<ExpenseForm />} />
+          <Route path="daily-close" element={<DailyClosePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

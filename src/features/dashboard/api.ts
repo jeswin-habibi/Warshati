@@ -1,0 +1,25 @@
+import { useQuery } from '@tanstack/react-query'
+import { supabase } from '@/lib/supabase'
+
+export interface InvoiceRow {
+  id: string
+  total: number
+  balance: number
+  issued_at: string
+  job?: { customer?: { name: string } | null } | null
+}
+
+export function useInvoices(businessId: string | null) {
+  return useQuery({
+    queryKey: ['invoices', businessId],
+    enabled: !!businessId,
+    queryFn: async (): Promise<InvoiceRow[]> => {
+      const { data, error } = await supabase
+        .from('invoices')
+        .select('id, total, balance, issued_at, job:jobs(customer:customers(name))')
+        .order('issued_at', { ascending: false })
+      if (error) throw error
+      return (data ?? []) as InvoiceRow[]
+    },
+  })
+}
