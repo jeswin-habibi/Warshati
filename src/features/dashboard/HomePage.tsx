@@ -69,11 +69,14 @@ export default function HomePage() {
   }
   const topCustomers = [...byCust.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
 
-  const byPart = new Map<string, number>()
+  const byCat = new Map<string, number>()
   for (const l of lineItems ?? []) {
-    if (l.type === 'part' || l.type === 'resale') byPart.set(l.description, (byPart.get(l.description) ?? 0) + Number(l.total || 0))
+    if (l.type === 'part' || l.type === 'resale') {
+      const cat = l.inventory?.category?.trim() || t('inventory.uncategorized')
+      byCat.set(cat, (byCat.get(cat) ?? 0) + Number(l.total || 0))
+    }
   }
-  const topParts = [...byPart.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
+  const topParts = [...byCat.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)
 
   const lowItems = (items ?? []).filter(
     (i) => i.track_stock && i.min_stock_alert != null && Number(i.current_stock) <= Number(i.min_stock_alert),
@@ -162,7 +165,7 @@ export default function HomePage() {
       </Card>
 
       {topCustomers.length > 0 && <ListCard title={t('home.topCustomers')} rows={topCustomers} />}
-      {topParts.length > 0 && <ListCard title={t('home.topParts')} rows={topParts} />}
+      {topParts.length > 0 && <ListCard title={t('home.topCategories')} rows={topParts} />}
 
       {lowItems.length > 0 && (
         <Card>

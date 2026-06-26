@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { SlidersHorizontal } from 'lucide-react'
 import { useBusiness } from '@/features/businesses/useBusiness'
-import { useItem, useSaveItem, useDeleteItem } from './api'
+import { useItem, useItems, useSaveItem, useDeleteItem } from './api'
 import { ScreenHeader } from '@/components/ScreenHeader'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,11 +17,16 @@ export default function ItemForm() {
   const { id } = useParams()
   const { data: business } = useBusiness()
   const existing = useItem(id)
+  const { data: allItems } = useItems(business?.id ?? null)
   const save = useSaveItem(business?.id ?? null)
   const del = useDeleteItem()
 
+  // Existing categories for the autocomplete datalist.
+  const categories = [...new Set((allItems ?? []).map((x) => x.category).filter((c): c is string => !!c))].sort()
+
   const [nameAr, setNameAr] = useState('')
   const [nameEn, setNameEn] = useState('')
+  const [category, setCategory] = useState('')
   const [cost, setCost] = useState('')
   const [sell, setSell] = useState('')
   const [stock, setStock] = useState('0')
@@ -34,6 +39,7 @@ export default function ItemForm() {
     if (!i) return
     setNameAr(i.name_ar ?? '')
     setNameEn(i.name_en ?? '')
+    setCategory(i.category ?? '')
     setCost(String(i.cost_price ?? ''))
     setSell(String(i.sell_price ?? ''))
     setStock(String(i.current_stock ?? 0))
@@ -49,6 +55,7 @@ export default function ItemForm() {
       id,
       name_ar: nameAr.trim(),
       name_en: nameEn.trim() || null,
+      category: category.trim() || null,
       cost_price: Number(cost) || 0,
       sell_price: Number(sell) || 0,
       current_stock: id ? undefined : Number(stock) || 0,
@@ -97,6 +104,20 @@ export default function ItemForm() {
         <div>
           <Label>{t('inventory.nameEn')}</Label>
           <Input value={nameEn} onChange={(e) => setNameEn(e.target.value)} dir="ltr" />
+        </div>
+        <div>
+          <Label>{t('inventory.category')}</Label>
+          <Input
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            list="category-list"
+            placeholder={t('inventory.categoryPlaceholder')}
+          />
+          <datalist id="category-list">
+            {categories.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>

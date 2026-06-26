@@ -29,6 +29,7 @@ export interface LineRow {
   total: number
   quantity: number
   type: string
+  inventory?: { category: string | null } | null
 }
 
 export function useLineItems(businessId: string | null) {
@@ -36,9 +37,11 @@ export function useLineItems(businessId: string | null) {
     queryKey: ['line-items-all', businessId],
     enabled: !!businessId,
     queryFn: async (): Promise<LineRow[]> => {
-      const { data, error } = await supabase.from('job_line_items').select('description, total, quantity, type')
+      const { data, error } = await supabase
+        .from('job_line_items')
+        .select('description, total, quantity, type, inventory:inventory_items(category)')
       if (error) throw error
-      return (data ?? []) as LineRow[]
+      return (data ?? []) as unknown as LineRow[]
     },
   })
 }

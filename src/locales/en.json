@@ -51,7 +51,7 @@
     "creating": "Creating…",
     "step": "Step {{n}} of {{total}}"
   },
-  "home": { "title": "Home", "todayRevenue": "Today's revenue", "comingSoon": "Coming soon", "monthRevenue": "This month", "weekRevenue": "This week", "jobsMonth": "Jobs (month)", "lowStock": "Low stock", "topCustomers": "Top customers", "netProfit": "Net profit", "vsLastMonth": "vs last month", "revenue": "Revenue", "expenses": "Expenses", "last14": "Last 14 days", "avgInvoice": "Avg invoice", "newCustomers": "New customers", "outstanding": "Outstanding", "topParts": "Top parts", "pipeline": "Job pipeline" },
+  "home": { "title": "Home", "todayRevenue": "Today's revenue", "comingSoon": "Coming soon", "monthRevenue": "This month", "weekRevenue": "This week", "jobsMonth": "Jobs (month)", "lowStock": "Low stock", "topCustomers": "Top customers", "netProfit": "Net profit", "vsLastMonth": "vs last month", "revenue": "Revenue", "expenses": "Expenses", "last14": "Last 14 days", "avgInvoice": "Avg invoice", "newCustomers": "New customers", "outstanding": "Outstanding", "topParts": "Top parts", "topCategories": "Top categories", "pipeline": "Job pipeline" },
   "customers": {
     "add": "Add customer",
     "empty": "No customers yet",
@@ -117,6 +117,9 @@
     "empty": "No items yet",
     "nameAr": "Name (Arabic)",
     "nameEn": "Name (English)",
+    "category": "Category",
+    "categoryPlaceholder": "e.g. Radiators, Filters, Brakes…",
+    "uncategorized": "Uncategorized",
     "cost": "Cost price",
     "sell": "Sell price",
     "stock": "Stock",
