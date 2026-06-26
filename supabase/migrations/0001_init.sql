@@ -4,25 +4,6 @@
 
 create extension if not exists pgcrypto;
 
--- ───────────────────────── helpers (security definer to avoid RLS recursion) ─────────────────────────
-create or replace function public.is_member(bid uuid)
-returns boolean language sql stable security definer set search_path = public as $$
-  select exists (select 1 from business_users bu where bu.business_id = bid and bu.user_id = auth.uid());
-$$;
-
-create or replace function public.has_role(bid uuid, variadic roles text[])
-returns boolean language sql stable security definer set search_path = public as $$
-  select exists (
-    select 1 from business_users bu
-    where bu.business_id = bid and bu.user_id = auth.uid() and bu.role = any(roles)
-  );
-$$;
-
-create or replace function public.set_updated_at()
-returns trigger language plpgsql as $$
-begin new.updated_at = now(); return new; end;
-$$;
-
 -- ───────────────────────── core / tenancy ─────────────────────────
 create table if not exists businesses (
   id uuid primary key default gen_random_uuid(),
@@ -52,6 +33,25 @@ create table if not exists business_users (
   created_at timestamptz not null default now(),
   unique (business_id, user_id)
 );
+
+-- ───────────────────────── helpers (defined after business_users so SQL bodies validate) ─────────────────────────
+create or replace function public.is_member(bid uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from business_users bu where bu.business_id = bid and bu.user_id = auth.uid());
+$$;
+
+create or replace function public.has_role(bid uuid, variadic roles text[])
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from business_users bu
+    where bu.business_id = bid and bu.user_id = auth.uid() and bu.role = any(roles)
+  );
+$$;
+
+create or replace function public.set_updated_at()
+returns trigger language plpgsql as $$
+begin new.updated_at = now(); return new; end;
+$$;
 
 -- ───────────────────────── customers & vehicles ─────────────────────────
 create table if not exists customers (
