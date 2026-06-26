@@ -107,5 +107,30 @@
     "deleteConfirm": "حذف هذا العمل وكل بنوده؟",
     "invoiceMsg": "فاتورة من {{shop}}\nالإجمالي: {{total}}\nشكراً لتعاملكم معنا 🙏",
     "status": { "estimate": "تقدير", "in_progress": "قيد التنفيذ", "completed": "مكتمل", "cancelled": "ملغي" }
+  },
+  "inventory": {
+    "add": "إضافة صنف",
+    "empty": "لا توجد أصناف بعد",
+    "nameAr": "الاسم (عربي)",
+    "nameEn": "الاسم (إنجليزي)",
+    "cost": "سعر التكلفة",
+    "sell": "سعر البيع",
+    "stock": "المخزون",
+    "minAlert": "حد التنبيه",
+    "track": "تتبع المخزون",
+    "newTitle": "صنف جديد",
+    "editTitle": "تعديل الصنف",
+    "save": "حفظ الصنف",
+    "lowStock": "منخفض",
+    "notTracked": "غير متتبع",
+    "adjust": "تعديل المخزون",
+    "adjustReason": "السبب",
+    "addStock": "إضافة",
+    "removeStock": "خصم",
+    "change": "الكمية",
+    "reason_correction": "تصحيح",
+    "reason_damaged": "تالف",
+    "reason_returned": "مرتجع",
+    "deleteConfirm": "حذف هذا الصنف؟"
   }
 }

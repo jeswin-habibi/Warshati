@@ -16,6 +16,8 @@ import JobForm from '@/features/jobs/JobForm'
 import JobDetailPage from '@/features/jobs/JobDetailPage'
 import LineItemForm from '@/features/jobs/LineItemForm'
 import InventoryPage from '@/features/inventory/InventoryPage'
+import ItemForm from '@/features/inventory/ItemForm'
+import AdjustStock from '@/features/inventory/AdjustStock'
 import MorePage from '@/features/more/MorePage'
 
 function FullScreen({ children }: { children: ReactNode }) {
@@ -48,6 +50,9 @@ export default function App() {
           <Route path="jobs/:id/line/new" element={<LineItemForm />} />
           <Route path="jobs/:id/line/:lineId" element={<LineItemForm />} />
           <Route path="inventory" element={<InventoryPage />} />
+          <Route path="inventory/new" element={<ItemForm />} />
+          <Route path="inventory/:id" element={<ItemForm />} />
+          <Route path="inventory/:id/adjust" element={<AdjustStock />} />
           <Route path="more" element={<MorePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

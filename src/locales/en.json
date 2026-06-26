@@ -107,5 +107,30 @@
     "deleteConfirm": "Delete this job and all its items?",
     "invoiceMsg": "Invoice from {{shop}}\nTotal: {{total}}\nThank you for your business 🙏",
     "status": { "estimate": "Estimate", "in_progress": "In progress", "completed": "Completed", "cancelled": "Cancelled" }
+  },
+  "inventory": {
+    "add": "Add item",
+    "empty": "No items yet",
+    "nameAr": "Name (Arabic)",
+    "nameEn": "Name (English)",
+    "cost": "Cost price",
+    "sell": "Sell price",
+    "stock": "Stock",
+    "minAlert": "Low-stock alert",
+    "track": "Track stock",
+    "newTitle": "New item",
+    "editTitle": "Edit item",
+    "save": "Save item",
+    "lowStock": "Low",
+    "notTracked": "Not tracked",
+    "adjust": "Adjust stock",
+    "adjustReason": "Reason",
+    "addStock": "Add",
+    "removeStock": "Remove",
+    "change": "Quantity",
+    "reason_correction": "Correction",
+    "reason_damaged": "Damaged",
+    "reason_returned": "Returned",
+    "deleteConfirm": "Delete this item?"
   }
 }
