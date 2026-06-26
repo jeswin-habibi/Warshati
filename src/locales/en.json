@@ -160,5 +160,11 @@
     "expenses": "Today's expenses",
     "net": "Net",
     "pending": "Pending invoices"
+  },
+  "media": {
+    "voiceNote": "Voice note",
+    "recordVoice": "Record",
+    "playVoice": "Play",
+    "photos": "Photos"
   }
 }

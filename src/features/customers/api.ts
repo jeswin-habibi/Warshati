@@ -52,6 +52,7 @@ export interface CustomerInput {
   alt_phone?: string | null
   civil_id?: string | null
   notes?: string | null
+  voice_note_url?: string | null
 }
 
 export function useSaveCustomer(businessId: string | null) {

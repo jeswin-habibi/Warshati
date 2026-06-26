@@ -160,5 +160,11 @@
     "expenses": "مصروفات اليوم",
     "net": "الصافي",
     "pending": "فواتير معلقة"
+  },
+  "media": {
+    "voiceNote": "ملاحظة صوتية",
+    "recordVoice": "تسجيل صوتي",
+    "playVoice": "تشغيل",
+    "photos": "الصور"
   }
 }

@@ -173,3 +173,46 @@ export function useCompleteJob(businessId: string | null) {
     },
   })
 }
+
+export interface JobAttachment {
+  id: string
+  job_id: string
+  type: string
+  url: string
+  caption: string | null
+}
+
+export function useJobAttachments(jobId: string | undefined) {
+  return useQuery({
+    queryKey: ['job-att', jobId],
+    enabled: !!jobId,
+    queryFn: async (): Promise<JobAttachment[]> => {
+      const { data, error } = await supabase.from('job_attachments').select('*').eq('job_id', jobId ?? '').order('created_at')
+      if (error) throw error
+      return (data ?? []) as JobAttachment[]
+    },
+  })
+}
+
+export function useAddAttachment(jobId: string) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ url, type, businessId }: { url: string; type: string; businessId: string | null }) => {
+      const id = crypto.randomUUID()
+      const { error } = await supabase.from('job_attachments').insert({ id, job_id: jobId, business_id: businessId, url, type })
+      if (error) throw error
+    },
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ['job-att', jobId] }),
+  })
+}
+
+export function useDeleteAttachment(jobId: string) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: async (attId: string) => {
+      const { error } = await supabase.from('job_attachments').delete().eq('id', attId)
+      if (error) throw error
+    },
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ['job-att', jobId] }),
+  })
+}

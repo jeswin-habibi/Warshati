@@ -11,6 +11,7 @@ import { StatusBadge } from '@/components/StatusBadge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
+import { PhotoGrid } from '@/components/PhotoGrid'
 import { formatMoney } from '@/lib/format'
 
 const TYPE_KEY: Record<LineItemType, string> = {
@@ -78,6 +79,11 @@ export default function JobDetailPage() {
           {job.complaint_text && <p className="whitespace-pre-wrap text-sm text-muted-foreground">{job.complaint_text}</p>}
         </CardContent>
       </Card>
+
+      <div>
+        <h2 className="mb-2 text-lg font-extrabold">{t('media.photos')}</h2>
+        <PhotoGrid businessId={business?.id ?? null} jobId={job.id} readOnly={done} />
+      </div>
 
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-extrabold">{t('jobs.items')}</h2>

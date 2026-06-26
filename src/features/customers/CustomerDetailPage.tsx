@@ -6,6 +6,7 @@ import { ScreenHeader } from '@/components/ScreenHeader'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
+import { VoiceNote } from '@/components/VoiceNote'
 
 export default function CustomerDetailPage() {
   const { t } = useTranslation()
@@ -54,6 +55,7 @@ export default function CustomerDetailPage() {
           {c.alt_phone && <div className="text-muted-foreground" dir="ltr">{c.alt_phone}</div>}
           {c.civil_id && <div className="text-sm text-muted-foreground" dir="ltr">{t('customers.civilId')}: {c.civil_id}</div>}
           {c.notes && <p className="whitespace-pre-wrap text-sm text-muted-foreground">{c.notes}</p>}
+          {c.voice_note_url && <VoiceNote businessId={null} value={c.voice_note_url} readOnly />}
         </CardContent>
       </Card>
 
