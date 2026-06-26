@@ -1,9 +1,11 @@
-// Kuwait conventions: KWD with 3 decimal places, Friday–Saturday weekend.
-// Arabic-Indic numerals by default with an optional Latin toggle.
+// Kuwait conventions: KWD with 3 decimal places. Numerals follow the active language —
+// Arabic → Arabic-Indic + د.ك, English → Latin digits + KWD.
+import i18n from '@/lib/i18n'
 
-export function formatMoney(amount: number, latn = false): string {
-  const locale = latn ? 'ar-KW-u-nu-latn' : 'ar-KW'
-  return new Intl.NumberFormat(locale, {
+const isEn = () => (i18n.language || 'en').startsWith('en')
+
+export function formatMoney(amount: number): string {
+  return new Intl.NumberFormat(isEn() ? 'en-KW' : 'ar-KW', {
     style: 'currency',
     currency: 'KWD',
     minimumFractionDigits: 3,
@@ -11,15 +13,14 @@ export function formatMoney(amount: number, latn = false): string {
   }).format(Number.isFinite(amount) ? amount : 0)
 }
 
-export function formatNumber(n: number, latn = false): string {
-  const locale = latn ? 'en' : 'ar-KW'
-  return new Intl.NumberFormat(locale).format(Number.isFinite(n) ? n : 0)
+export function formatNumber(n: number): string {
+  return new Intl.NumberFormat(isEn() ? 'en' : 'ar-KW').format(Number.isFinite(n) ? n : 0)
 }
 
-export function formatDate(d: string | Date | null | undefined, latn = false): string {
+export function formatDate(d: string | Date | null | undefined): string {
   if (!d) return '—'
   const date = typeof d === 'string' ? new Date(d) : d
-  return new Intl.DateTimeFormat(latn ? 'en-GB' : 'ar-KW', {
+  return new Intl.DateTimeFormat(isEn() ? 'en-GB' : 'ar-KW', {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
