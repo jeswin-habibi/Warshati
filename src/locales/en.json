@@ -171,5 +171,23 @@
     "playVoice": "Play",
     "photos": "Photos",
     "photo": "Photo"
+  },
+  "insights": {
+    "followUps": "Follow-ups",
+    "followUpsHint": "Customers who haven't visited in a while — remind them to come back",
+    "noFollowUps": "No follow-ups",
+    "daysAgo": "Last visit {{n}} days ago",
+    "remind": "Remind",
+    "followUpMsg": "Hi {{name}}, it's been a while since your last visit to {{shop}}. Time for a service?",
+    "moneyOwed": "Money owed",
+    "noOwed": "No outstanding balances",
+    "markPaid": "Mark paid",
+    "owedMsg": "Hi {{name}}, you have an outstanding balance of {{amount}} at {{shop}}. Thank you 🙏",
+    "profit": "Profit",
+    "revenue": "Revenue",
+    "partsCost": "Parts cost",
+    "grossProfit": "Gross profit",
+    "margin": "Margin",
+    "topProfit": "Most profitable items"
   }
 }

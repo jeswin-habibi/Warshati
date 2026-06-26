@@ -22,6 +22,9 @@ import MorePage from '@/features/more/MorePage'
 import ExpensesPage from '@/features/expenses/ExpensesPage'
 import ExpenseForm from '@/features/expenses/ExpenseForm'
 import DailyClosePage from '@/features/dailyclose/DailyClosePage'
+import FollowUpsPage from '@/features/insights/FollowUpsPage'
+import MoneyOwedPage from '@/features/insights/MoneyOwedPage'
+import ProfitPage from '@/features/insights/ProfitPage'
 
 function FullScreen({ children }: { children: ReactNode }) {
   return <div className="flex min-h-[100svh] items-center justify-center">{children}</div>
@@ -61,6 +64,9 @@ export default function App() {
           <Route path="expenses/new" element={<ExpenseForm />} />
           <Route path="expenses/:id" element={<ExpenseForm />} />
           <Route path="daily-close" element={<DailyClosePage />} />
+          <Route path="follow-ups" element={<FollowUpsPage />} />
+          <Route path="money-owed" element={<MoneyOwedPage />} />
+          <Route path="profit" element={<ProfitPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

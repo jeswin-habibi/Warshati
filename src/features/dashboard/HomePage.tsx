@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Users, Wrench, CalendarCheck, TrendingUp, TrendingDown, AlertTriangle } from 'lucide-react'
+import { Users, Wrench, CalendarCheck, TrendingUp, TrendingDown, AlertTriangle, MessageCircle, Wallet } from 'lucide-react'
 import { useBusiness } from '@/features/businesses/useBusiness'
 import { useInvoices, useLineItems } from './api'
 import { useJobs } from '@/features/jobs/api'
@@ -80,6 +80,17 @@ export default function HomePage() {
   )
   const revExpMax = Math.max(1, monthRev, monthExp)
 
+  const lastVisit = new Map<string, number>()
+  for (const j of jobs ?? []) {
+    if (!j.customer_id) continue
+    const tt = new Date(j.created_at).getTime()
+    if (tt > (lastVisit.get(j.customer_id) ?? 0)) lastVisit.set(j.customer_id, tt)
+  }
+  const dueCount = (customers ?? []).filter((c) => {
+    const lv = lastVisit.get(c.id)
+    return lv && Date.now() - lv >= 75 * DAY
+  }).length
+
   return (
     <div className="space-y-4">
       {business && <h1 className="text-2xl font-extrabold">{business.name}</h1>}
@@ -106,6 +117,17 @@ export default function HomePage() {
           <Bar label={t('home.expenses')} value={monthExp} max={revExpMax} color="bg-destructive" />
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-2 gap-3">
+        <button onClick={() => nav('/follow-ups')} className="rounded-2xl border border-success/30 bg-success/10 p-3 text-start">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-success"><MessageCircle className="h-4 w-4" />{t('insights.followUps')}</div>
+          <div className="stat-number mt-1 text-2xl text-success">{formatNumber(dueCount)}</div>
+        </button>
+        <button onClick={() => nav('/money-owed')} className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3 text-start">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600"><Wallet className="h-4 w-4" />{t('insights.moneyOwed')}</div>
+          <div className="stat-number mt-1 text-2xl text-amber-600">{formatMoney(outstanding)}</div>
+        </button>
+      </div>
 
       <Card>
         <CardContent>
