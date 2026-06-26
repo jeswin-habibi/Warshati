@@ -23,3 +23,22 @@ export function useInvoices(businessId: string | null) {
     },
   })
 }
+
+export interface LineRow {
+  description: string
+  total: number
+  quantity: number
+  type: string
+}
+
+export function useLineItems(businessId: string | null) {
+  return useQuery({
+    queryKey: ['line-items-all', businessId],
+    enabled: !!businessId,
+    queryFn: async (): Promise<LineRow[]> => {
+      const { data, error } = await supabase.from('job_line_items').select('description, total, quantity, type')
+      if (error) throw error
+      return (data ?? []) as LineRow[]
+    },
+  })
+}

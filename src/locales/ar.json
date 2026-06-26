@@ -51,7 +51,7 @@
     "creating": "جارٍ الإنشاء…",
     "step": "خطوة {{n}} من {{total}}"
   },
-  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا", "monthRevenue": "إيراد الشهر", "weekRevenue": "هذا الأسبوع", "jobsMonth": "أعمال الشهر", "lowStock": "مخزون منخفض", "topCustomers": "أفضل العملاء" },
+  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا", "monthRevenue": "إيراد الشهر", "weekRevenue": "هذا الأسبوع", "jobsMonth": "أعمال الشهر", "lowStock": "مخزون منخفض", "topCustomers": "أفضل العملاء", "netProfit": "صافي الربح", "vsLastMonth": "عن الشهر الماضي", "revenue": "الإيرادات", "expenses": "المصروفات", "last14": "آخر ١٤ يومًا", "avgInvoice": "متوسط الفاتورة", "newCustomers": "عملاء جدد", "outstanding": "مستحقات", "topParts": "أكثر القطع مبيعًا", "pipeline": "حالة الأعمال" },
   "customers": {
     "add": "إضافة عميل",
     "empty": "لا يوجد عملاء بعد",
