@@ -1,0 +1,55 @@
+{
+  "app": { "name": "ورشتي", "tagline": "إدارة ورشتك من جوالك" },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "next": "التالي",
+    "back": "رجوع",
+    "skip": "تخطّي",
+    "done": "تم",
+    "search": "بحث",
+    "add": "إضافة",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "loading": "جارٍ التحميل…",
+    "retry": "إعادة المحاولة",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "today": "اليوم",
+    "currency": "د.ك"
+  },
+  "sync": {
+    "online": "متصل",
+    "offline": "غير متصل",
+    "syncing": "جارٍ المزامنة…",
+    "synced": "تمت المزامنة",
+    "pending": "بانتظار المزامنة"
+  },
+  "nav": { "home": "الرئيسية", "customers": "العملاء", "jobs": "الأعمال", "inventory": "المخزون", "more": "المزيد" },
+  "auth": {
+    "title": "تسجيل الدخول",
+    "subtitle": "ادخل إلى حساب ورشتك",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signIn": "دخول",
+    "signUp": "إنشاء حساب",
+    "createAccount": "إنشاء حساب جديد",
+    "haveAccount": "لديك حساب؟ سجّل الدخول",
+    "noAccount": "ليس لديك حساب؟ أنشئ واحدًا",
+    "signOut": "تسجيل الخروج",
+    "error": "تعذّر تسجيل الدخول، تأكد من البيانات",
+    "phoneSoon": "تسجيل الدخول برقم الجوال قريبًا"
+  },
+  "onboarding": {
+    "welcome": "أهلاً بك في ورشتي",
+    "welcomeSub": "جهّز ورشتك في أقل من ٣ دقائق",
+    "businessName": "اسم الورشة",
+    "businessNamePlaceholder": "مثال: ورشة الخليج",
+    "language": "اللغة",
+    "currency": "العملة",
+    "create": "إنشاء الورشة",
+    "creating": "جارٍ الإنشاء…",
+    "step": "خطوة {{n}} من {{total}}"
+  },
+  "home": { "title": "الرئيسية", "todayRevenue": "إيراد اليوم", "comingSoon": "قريبًا" }
+}

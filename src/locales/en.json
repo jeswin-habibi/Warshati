@@ -1,0 +1,55 @@
+{
+  "app": { "name": "Warshati", "tagline": "Run your shop from your phone" },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip",
+    "done": "Done",
+    "search": "Search",
+    "add": "Add",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "required": "Required",
+    "optional": "Optional",
+    "today": "Today",
+    "currency": "KWD"
+  },
+  "sync": {
+    "online": "Online",
+    "offline": "Offline",
+    "syncing": "Syncing…",
+    "synced": "Synced",
+    "pending": "Pending sync"
+  },
+  "nav": { "home": "Home", "customers": "Customers", "jobs": "Jobs", "inventory": "Inventory", "more": "More" },
+  "auth": {
+    "title": "Sign in",
+    "subtitle": "Access your shop account",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "createAccount": "Create a new account",
+    "haveAccount": "Have an account? Sign in",
+    "noAccount": "No account? Create one",
+    "signOut": "Sign out",
+    "error": "Could not sign in, check your details",
+    "phoneSoon": "Phone sign-in coming soon"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Warshati",
+    "welcomeSub": "Set up your shop in under 3 minutes",
+    "businessName": "Shop name",
+    "businessNamePlaceholder": "e.g. Gulf Auto Workshop",
+    "language": "Language",
+    "currency": "Currency",
+    "create": "Create shop",
+    "creating": "Creating…",
+    "step": "Step {{n}} of {{total}}"
+  },
+  "home": { "title": "Home", "todayRevenue": "Today's revenue", "comingSoon": "Coming soon" }
+}
